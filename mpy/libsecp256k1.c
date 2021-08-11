@@ -549,14 +549,14 @@ STATIC mp_obj_t usecp256k1_ec_privkey_add(mp_obj_t privarg, const mp_obj_t tweak
     mp_buffer_info_t privbuf;
     mp_get_buffer_raise(privarg, &privbuf, MP_BUFFER_READ);
     if(privbuf.len != 32){
-        mp_raise_ValueError("Private key should be 32 bytes long");
+        mp_raise_ValueError(MP_ERROR_TEXT("Private key should be 32 bytes long"));
         return mp_const_none;
     }
 
     mp_buffer_info_t tweakbuf;
     mp_get_buffer_raise(tweakarg, &tweakbuf, MP_BUFFER_READ);
     if(tweakbuf.len != 32){
-        mp_raise_ValueError("Tweak should be 32 bytes long");
+        mp_raise_ValueError(MP_ERROR_TEXT("Tweak should be 32 bytes long"));
         return mp_const_none;
     }
 
@@ -566,7 +566,7 @@ STATIC mp_obj_t usecp256k1_ec_privkey_add(mp_obj_t privarg, const mp_obj_t tweak
 
     int res = secp256k1_ec_privkey_tweak_add(ctx, priv2.buf, tweakbuf.buf);
     if(!res){ // never happens according to the API
-        mp_raise_ValueError("Failed to tweak the private key");
+        mp_raise_ValueError(MP_ERROR_TEXT("Failed to tweak the private key"));
         return mp_const_none;
     }
     return mp_obj_new_str_from_vstr(&mp_type_bytes, &priv2);
@@ -610,7 +610,7 @@ STATIC mp_obj_t usecp256k1_ec_pubkey_add(mp_obj_t pubarg, const mp_obj_t tweakar
     mp_buffer_info_t pubbuf;
     mp_get_buffer_raise(pubarg, &pubbuf, MP_BUFFER_READ);
     if(pubbuf.len != 64){
-        mp_raise_ValueError("Public key should be 64 bytes long");
+        mp_raise_ValueError(MP_ERROR_TEXT("Public key should be 64 bytes long"));
         return mp_const_none;
     }
     secp256k1_pubkey pub;
@@ -619,13 +619,13 @@ STATIC mp_obj_t usecp256k1_ec_pubkey_add(mp_obj_t pubarg, const mp_obj_t tweakar
     mp_buffer_info_t tweakbuf;
     mp_get_buffer_raise(tweakarg, &tweakbuf, MP_BUFFER_READ);
     if(tweakbuf.len != 32){
-        mp_raise_ValueError("Tweak should be 32 bytes long");
+        mp_raise_ValueError(MP_ERROR_TEXT("Tweak should be 32 bytes long"));
         return mp_const_none;
     }
 
     int res = secp256k1_ec_pubkey_tweak_add(ctx, &pub, tweakbuf.buf);
     if(!res){ // never happens according to the API
-        mp_raise_ValueError("Failed to tweak the public key");
+        mp_raise_ValueError(MP_ERROR_TEXT("Failed to tweak the public key"));
         return mp_const_none;
     }
 
